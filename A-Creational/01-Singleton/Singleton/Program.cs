@@ -25,6 +25,6 @@ instance1.Log($"Message from {nameof(instance1)}");
 instance2.Log($"Message from {nameof(instance2)}");
 Logger.Instance.Log($"Message from {nameof(Logger.Instance)}");
 
-Console.RedLine();
+Console.ReadLine();
 
 

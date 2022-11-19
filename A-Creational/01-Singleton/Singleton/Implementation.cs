@@ -1,19 +1,28 @@
 namespace Singleton
 {
+    /// <summary>
+    /// Default way not thread safe 
+    /// We should use Lazy that guarantees thread safe
+    /// </summary>
     public class Logger
     {
-        private static Logger? _instance;
+        // private static Logger? _instance;
+
+        private static readonly Lazy<Logger> _lazyLogger = new Lazy<Logger>(() => new Logger());
+
 
         public static Logger Instance
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new Logger();
-                }
+                return _lazyLogger.Value;
 
-                return _instance;
+                // if (_instance == null)
+                // {
+                //     _instance = new Logger();
+                // }
+
+                // return _instance;
             }
         }
 
