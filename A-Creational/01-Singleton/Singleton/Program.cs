@@ -9,6 +9,13 @@
 //----------
 //Note
 //1-Prefer lazy instantiation
+//----------
+//Use case:
+//1-When there must be exactly one instance of a class,and it must be accessible to 
+//clinet from well-known access point
+//2-When the sole instance should be extensible by subclassing ,and clints should be
+//able to use an extended instance without modifying their code
+//
 
 Console.Title = "Singleton pattern";
 
