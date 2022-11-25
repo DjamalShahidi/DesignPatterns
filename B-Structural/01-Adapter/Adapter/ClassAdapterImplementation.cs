@@ -1,5 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
-namespace ObjectAdapter
+namespace ClassAdapter
 {
     public class CityFromExternalSystem
     {
@@ -43,12 +42,12 @@ namespace ObjectAdapter
         City GetCity();
     }
 
-    public class CityAdapter : ICityAdapter
+    public class CityAdapter : ExternalSystem, ICityAdapter
     {
-        public ExternalSystem ExternalSystem { get; private set; } = new();
         public City GetCity()
         {
-            var cityFromExternalSystem = ExternalSystem.GetCity();
+            //Call into the external system
+            var cityFromExternalSystem = base.GetCity();
 
             return new City(
                 $"{cityFromExternalSystem.Name} - {cityFromExternalSystem.NickName}",
