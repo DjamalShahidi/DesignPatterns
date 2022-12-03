@@ -1,4 +1,5 @@
-using Internal;
+using System.ComponentModel;
+using System.Collections.Generic;
 using System;
 namespace Decorator
 {
@@ -53,6 +54,25 @@ namespace Decorator
         {
             Console.WriteLine($"Collecting statistic in {nameof(StatisticsDecorator)}");
             return base.SendMail(message);
+        }
+    }
+
+    public class MessageDatabaseDecorator : MailServiceDecoratorBase
+    {
+        public List<string> SentMessages { get; private set; } = new List<string>();
+        public MessageDatabaseDecorator(IMailService mailService) : base(mailService)
+        {
+
+        }
+
+        public override bool SendMail(string message)
+        {
+            if (base.SendMail(message))
+            {
+                SentMessages.Add(message);
+                return true;
+            }
+            return false;
         }
     }
 }
