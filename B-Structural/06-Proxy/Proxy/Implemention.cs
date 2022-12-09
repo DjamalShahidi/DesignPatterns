@@ -1,6 +1,11 @@
 namespace Proxy
 {
-    public class Document
+    public interface IDocument
+    {
+        void DisplayDocument();
+    }
+
+    public class Document : IDocument
     {
 
         public string _fileName;
@@ -33,5 +38,71 @@ namespace Proxy
         }
 
 
+    }
+
+    public class DocumentProxy : IDocument
+    {
+        private Document? _document;
+        private string _fileName;
+
+        public DocumentProxy(string fileName)
+        {
+            _fileName = fileName;
+        }
+        public void DisplayDocument()
+        {
+            if (_document == null)
+            {
+                _document = new Document(_fileName);
+            }
+
+            _document.DisplayDocument();
+        }
+    }
+
+    //Lazy
+    public class LazyDocumentProxy : IDocument
+    {
+        private Lazy<Document> _document;
+        private string _fileName;
+
+        public LazyDocumentProxy(string fileName)
+        {
+            _fileName = fileName;
+            _document = new Lazy<Document>(() => new Document(_fileName));
+        }
+        public void DisplayDocument()
+        {
+            _document.Value.DisplayDocument();
+        }
+    }
+
+
+    public class ProtectedDocumentProxy : IDocument
+    {
+        private string _fileName;
+        private string _userRole;
+        private DocumentProxy _documentProxy;
+        public ProtectedDocumentProxy(string fileName, string userRole)
+        {
+            fileName = _fileName;
+            _userRole = userRole;
+            _documentProxy = new DocumentProxy(_fileName);
+        }
+
+        public void DisplayDocument()
+        {
+            Console.WriteLine($"Entring DisplayDocument in {nameof(ProtectedDocumentProxy)}");
+
+            if (_userRole != "Viewer")
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            _documentProxy.DisplayDocument();
+
+            Console.WriteLine($"Exiting DisplayDocument in {nameof(ProtectedDocumentProxy)}");
+
+        }
     }
 }
